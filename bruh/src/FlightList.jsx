@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, onValue, off } from 'firebase/database';
+import RemoveAllFlightsButton from './RemoveAllFlightsButton'; // Import the new button component
+
 
 const FlightList = () => {
   const [flights, setFlights] = useState([]);
@@ -53,6 +55,7 @@ const FlightList = () => {
   return (
     <div>
       <h2>Flight List</h2>
+      <RemoveAllFlightsButton /> {/* Add the RemoveAllFlightsButton component */}
       <ul>
         {flights.map((flight) => (
           <li key={flight.id}>
