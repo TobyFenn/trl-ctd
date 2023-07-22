@@ -25,8 +25,8 @@ initializeApp(firebaseConfig);
 const database = getDatabase(); // Use getDatabase() to access the database function
 const dbRef = ref(database, 'flights/flight123'); // Create a database reference
 set(dbRef, {
-  flightNumber: 'FL123',
-  flightDate: '2023-07-25',
+  flightNumber: 'testdata',
+  flightDate: '2003-04-08',
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
