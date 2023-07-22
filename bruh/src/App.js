@@ -10,12 +10,6 @@ const App = () => {
   return (
     <Router>
       <div className="app-container">
-        <div className="centered-container">
-          <Routes> {/* Use "Routes" instead of "Switch" */}
-            <Route path="/" element={<Home />} /> {/* Use "element" instead of "component" */}
-            <Route path="/new-page" element={<NewPage />} /> {/* Use "element" instead of "component" */}
-          </Routes>
-        </div>
         <div>
           <h1>Flight Booking Form</h1>
           <FlightForm />
