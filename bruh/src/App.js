@@ -1,16 +1,19 @@
-// import logo from './logo.svg';
-import './App.css';
 import React from 'react';
 import FlightNumberInput from './FlightNumberInput';
 import FlightDateInput from './FlightDateInput';
+import SubmitButton from './SubmitButton';
+import './App.css';
 
-function App() {
+const App = () => {
   return (
     <div className="app-container">
-      <FlightNumberInput />
-      <FlightDateInput />
+      <div className="centered-container">
+        <FlightNumberInput />
+        <FlightDateInput />
+        <SubmitButton />
+      </div>
     </div>
   );
-}
+};
 
 export default App;

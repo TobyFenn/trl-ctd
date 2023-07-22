@@ -13,6 +13,25 @@
   }
 }
 
+.submit-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 10px; /* Add some spacing between the components (optional) */
+}
+
+.submit-button button {
+  font-size: 18px;
+  height: 40px;
+  width: 200px;
+  border-radius: 10px;
+  background: #282c34;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
