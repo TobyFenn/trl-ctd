@@ -1,8 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client'; // Import createRoot from "react-dom/client"
 import { initializeApp } from 'firebase/app'; // Import specific module
 import 'firebase/database'; // Import other Firebase modules you plan to use (e.g., firestore, auth)
-import { getDatabase, ref, set } from 'firebase/database'; // Import Firebase Database functions
+// import { getDatabase, ref, set } from 'firebase/database'; // Import Firebase Database functions
 
 
 import './index.css';
@@ -22,12 +22,12 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 
 // Add test data to Firebase database
-const database = getDatabase(); // Use getDatabase() to access the database function
-const dbRef = ref(database, 'flights/flight123'); // Create a database reference
-set(dbRef, {
-  flightNumber: 'testdata',
-  flightDate: '2003-04-08',
-});
+// const database = getDatabase(); // Use getDatabase() to access the database function
+// const dbRef = ref(database, 'flights/flight123'); // Create a database reference
+// set(dbRef, {
+//   flightNumber: 'testdata',
+//   flightDate: '2003-04-08',
+// });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

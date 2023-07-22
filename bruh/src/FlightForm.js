@@ -49,7 +49,7 @@ const FlightForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="flightNumber">Flight Number:</label>
+        <label htmlFor="flightNumber">Flight Number: </label>
         <input
           type="text"
           id="flightNumber"
@@ -62,7 +62,7 @@ const FlightForm = () => {
         />
       </div>
       <div>
-        <label htmlFor="flightDate">Flight Date:</label>
+        <label htmlFor="flightDate">Flight Date: </label>
         <input
           type="date"
           id="flightDate"
