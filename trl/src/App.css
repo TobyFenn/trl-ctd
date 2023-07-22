@@ -13,6 +13,18 @@
   }
 }
 
+.app-container {
+  display: flex;
+  align-items: flex-start;
+}
+
+/* Add some spacing between the components (optional) */
+.FlightNumberInput,
+.FlightDateInput {
+  margin-right: 10px;
+}
+
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
