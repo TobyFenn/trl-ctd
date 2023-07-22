@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { initializeApp } from 'firebase/app';
+import { getDatabase, ref, set } from 'firebase/database';
 
 const FlightForm = () => {
   const [flightNumber, setFlightNumber] = useState('');
@@ -20,6 +22,26 @@ const FlightForm = () => {
     // You can use this information to store it in Firebase or perform other actions
     console.log('Submitted Flight Number:', flightNumber);
     console.log('Submitted Flight Date:', flightDate);
+
+    // Store the flight information in Firebase Firestore Realtime Database
+    const firebaseConfig = {
+        apiKey: "AIzaSyDtXJdCDFnkS044k-_6TMrd83YQHo-NX04",
+        authDomain: "flites.firebaseapp.com",
+        projectId: "flites",
+        storageBucket: "flites.appspot.com",
+        messagingSenderId: "438351659234",
+        appId: "1:438351659234:web:c110c8410d5c9300e55ebb"
+      };
+
+    // const app = initializeApp(firebaseConfig);
+    initializeApp(firebaseConfig);
+
+    const database = getDatabase();
+    const dbRef = ref(database, 'flights/flight123');
+    set(dbRef, {
+      flightNumber: flightNumber,
+      flightDate: flightDate,
+    });
   };
 
   return (
