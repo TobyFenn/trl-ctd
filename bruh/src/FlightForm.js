@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, set } from 'firebase/database';
+import { getDatabase, ref, set, push } from 'firebase/database';
 
 const FlightForm = () => {
   const [flightNumber, setFlightNumber] = useState('');
@@ -37,8 +37,10 @@ const FlightForm = () => {
     initializeApp(firebaseConfig);
 
     const database = getDatabase();
-    const dbRef = ref(database, 'flights/flight123');
-    set(dbRef, {
+    const flightsRef = ref(database, 'flights');
+    const newFlightRef = push(flightsRef); // Generate a new unique key
+
+    set(newFlightRef, {
       flightNumber: flightNumber,
       flightDate: flightDate,
     });

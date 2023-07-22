@@ -11,7 +11,7 @@ const App = () => {
     <Router>
       <div className="app-container">
         <div>
-          <h1>Flight Booking Form</h1>
+          <h1>Ride matching form</h1>
           <FlightForm />
         </div>
       </div>
