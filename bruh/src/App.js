@@ -1,18 +1,21 @@
 import React from 'react';
-import FlightNumberInput from './FlightNumberInput';
-import FlightDateInput from './FlightDateInput';
-import SubmitButton from './SubmitButton';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Import "Routes" instead of "Switch"
+import Home from './Home';
+import NewPage from './NewPage';
 import './App.css';
 
 const App = () => {
   return (
-    <div className="app-container">
-      <div className="centered-container">
-        <FlightNumberInput />
-        <FlightDateInput />
-        <SubmitButton />
+    <Router>
+      <div className="app-container">
+        <div className="centered-container">
+          <Routes> {/* Use "Routes" instead of "Switch" */}
+            <Route path="/" element={<Home />} /> {/* Use "element" instead of "component" */}
+            <Route path="/new-page" element={<NewPage />} /> {/* Use "element" instead of "component" */}
+          </Routes>
+        </div>
       </div>
-    </div>
+    </Router>
   );
 };
 
