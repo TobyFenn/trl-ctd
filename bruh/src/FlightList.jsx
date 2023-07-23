@@ -4,6 +4,7 @@ import { getDatabase, ref, onValue, off } from 'firebase/database';
 import RemoveAllFlightsButton from './RemoveAllFlightsButton'; // Import the new button component
 
 
+
 const FlightList = () => {
   const [flights, setFlights] = useState([]);
 

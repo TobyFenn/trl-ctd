@@ -17,7 +17,6 @@ const App = () => {
           <h1>Ride matching form</h1>
           <FlightForm />
           <FlightList />
-
         </div>
       </div>
     </Router>
