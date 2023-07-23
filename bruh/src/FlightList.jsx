@@ -147,10 +147,10 @@ const firebaseConfig = {
                 color: duplicateFlights.has(`${flight.flightNumber}-${flight.flightDate}`) ? 'red' : 'black',
               }}
             >
-              Flight Number: {flight.flightNumber}, Date: {flight.flightDate}, Arrival Time: {arrivalTimes[`${flight.flightNumber}-${flight.flightDate}`] || 'N/A'}
-              {/* Display the phone number here */}
-              {flight.phoneNumber && `, Phone Number: ${flight.phoneNumber}`}
-            </li>
+            Flight Number: {flight.flightNumber}, Date: {flight.flightDate}, Arrival Time: {arrivalTimes[`${flight.flightNumber}-${flight.flightDate}`] || 'N/A'}
+            {flight.phoneNumber && `, Phone Number: ${flight.phoneNumber}`}
+            {`, Wait: ${flight.maxWaitTime} minutes`}
+          </li>
           ))}
         </ul>
       </div>

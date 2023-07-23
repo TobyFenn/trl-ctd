@@ -5,7 +5,8 @@ import { getDatabase, ref, set, push } from 'firebase/database';
 const FlightForm = () => {
   const [flightNumber, setFlightNumber] = useState('');
   const [flightDate, setFlightDate] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState(''); // New state for phone number
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [maxWaitTime, setMaxWaitTime] = useState(0); // New state for maximum wait time
 
   // Function to handle input changes
   const handleInputChange = (event) => {
@@ -16,6 +17,8 @@ const FlightForm = () => {
       setFlightDate(value);
     } else if (name === 'phoneNumber') {
       setPhoneNumber(value);
+    } else if (name === 'maxWaitTime') {
+      setMaxWaitTime(Number(value));
     }
   };
 
@@ -26,16 +29,17 @@ const FlightForm = () => {
     console.log('Submitted Flight Number:', flightNumber);
     console.log('Submitted Flight Date:', flightDate);
     console.log('Submitted Phone Number:', phoneNumber);
+    console.log('Maximum Wait Time:', maxWaitTime);
 
     // Store the flight information in Firebase Firestore Realtime Database
     const firebaseConfig = {
-        apiKey: "AIzaSyDtXJdCDFnkS044k-_6TMrd83YQHo-NX04",
-        authDomain: "flites.firebaseapp.com",
-        projectId: "flites",
-        storageBucket: "flites.appspot.com",
-        messagingSenderId: "438351659234",
-        appId: "1:438351659234:web:c110c8410d5c9300e55ebb"
-      };
+      apiKey: "AIzaSyDtXJdCDFnkS044k-_6TMrd83YQHo-NX04",
+      authDomain: "flites.firebaseapp.com",
+      projectId: "flites",
+      storageBucket: "flites.appspot.com",
+      messagingSenderId: "438351659234",
+      appId: "1:438351659234:web:c110c8410d5c9300e55ebb"
+    };
 
     initializeApp(firebaseConfig);
 
@@ -46,7 +50,8 @@ const FlightForm = () => {
     set(newFlightRef, {
       flightNumber: flightNumber,
       flightDate: flightDate,
-      phoneNumber: phoneNumber, // Include the phone number in the stored data
+      phoneNumber: phoneNumber,
+      maxWaitTime: maxWaitTime, // Include the maximum wait time in the stored data
     });
   };
 
@@ -86,6 +91,21 @@ const FlightForm = () => {
           onChange={handleInputChange}
           required
         />
+      </div>
+      <div>
+        <label htmlFor="maxWaitTime">Maximum Wait Time: </label>
+        <select
+          id="maxWaitTime"
+          name="maxWaitTime"
+          value={maxWaitTime}
+          onChange={handleInputChange}
+          required
+        >
+          <option value={0}>0 minutes</option>
+          <option value={30}>30 minutes</option>
+          <option value={60}>60 minutes</option>
+          <option value={90}>90 minutes</option>
+        </select>
       </div>
       <button type="submit">Submit</button>
     </form>
