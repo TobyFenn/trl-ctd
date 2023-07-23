@@ -93,25 +93,33 @@ const firebaseConfig = {
     };
   
     useEffect(() => {
-      const fetchFlightInfoForFlights = async () => {
-        const updatedArrivalTimes = {};
-        for (const flight of flights) {
-          const { flightNumber, flightDate } = flight;
-          console.log(`Fetching Arrival Time for Flight Number: ${flightNumber} - Date: ${flightDate}`);
-          const flightInfo = await fetchFlightInformation(flightNumber);
-          if (flightInfo && flightInfo.response && flightInfo.response[0] && flightInfo.response[0].arr_time_utc) {
-            console.log(`Arrival Time for Flight Number: ${flightNumber} - Date: ${flightDate} - ${flightInfo.response[0].arr_time_utc}`);
-            updatedArrivalTimes[`${flightNumber}-${flightDate}`] = flightInfo.response[0].arr_time_utc;
-          } else {
-            console.log(`No Arrival Time found for Flight Number: ${flightNumber} - Date: ${flightDate}`);
-            updatedArrivalTimes[`${flightNumber}-${flightDate}`] = 'N/A';
+        const fetchFlightInfoForFlights = async () => {
+          const updatedArrivalTimes = {};
+      
+          for (const flight of flights) {
+            const { flightNumber, flightDate } = flight;
+            console.log(`Fetching Arrival Time for Flight Number: ${flightNumber} - Date: ${flightDate}`);
+      
+            try {
+              const flightInfo = await fetchFlightInformation(flightNumber);
+              if (flightInfo && flightInfo.response && flightInfo.response[0] && flightInfo.response[0].arr_time_utc) {
+                console.log(`Arrival Time for Flight Number: ${flightNumber} - Date: ${flightDate} - ${flightInfo.response[0].arr_time_utc}`);
+                updatedArrivalTimes[`${flightNumber}-${flightDate}`] = flightInfo.response[0].arr_time_utc;
+              } else {
+                console.log(`No Arrival Time found for Flight Number: ${flightNumber} - Date: ${flightDate}`);
+                updatedArrivalTimes[`${flightNumber}-${flightDate}`] = 'N/A';
+              }
+            } catch (error) {
+              console.error('Error fetching flight information:', error);
+              updatedArrivalTimes[`${flightNumber}-${flightDate}`] = 'Error'; // Mark the error in the updatedArrivalTimes object
+            }
           }
-        }
-        setArrivalTimes(updatedArrivalTimes);
-      };
-  
-      fetchFlightInfoForFlights();
-    }, [flights]);
+      
+          setArrivalTimes(updatedArrivalTimes);
+        };
+      
+        fetchFlightInfoForFlights();
+      }, [flights]);
 
     const handleRemoveMostRecentFlight = () => {
         if (flights.length > 0) {
