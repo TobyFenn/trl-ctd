@@ -63,14 +63,30 @@ const FlightList = () => {
         const { flightNumber, flightDate } = flight;
         const arrivalTime = arrivalTimes[`${flightNumber}-${flightDate}`];
 
+        // Skip the flight if it has "N/A" arrival time
+        if (arrivalTime === 'N/A') {
+          return;
+        }
+
         // Check for duplicates based on arrival times
         for (let i = index + 1; i < flightsArray.length; i++) {
           const otherFlight = flightsArray[i];
           const otherArrivalTime = arrivalTimes[`${otherFlight.flightNumber}-${otherFlight.flightDate}`];
 
+          // Skip the comparison if either of the flights has "N/A" arrival time
+          if (otherArrivalTime === 'N/A') {
+            continue;
+          }
+
           if (arrivalTime === otherArrivalTime) {
             duplicateIds.push(flight.id);
             duplicateIds.push(otherFlight.id);
+
+            // Adding console debug messages here
+            console.log('Two flights match:');
+            console.log('Flight 1 ID:', flight.id);
+            console.log('Flight 2 ID:', otherFlight.id);
+
             break; // Break if a match is found
           }
         }
