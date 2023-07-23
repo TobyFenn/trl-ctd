@@ -133,28 +133,43 @@ const firebaseConfig = {
         }
       };
   
-    return (
-      <div>
-        <h2>Flight List</h2>
-        <RemoveAllFlightsButton />
-        <button onClick={handleRemoveMostRecentFlight}>Remove Most Recent Flight</button>
-        <ul>
-          {flights.map((flight) => (
-            <li
-              key={flight.id}
-              className={`flight-item ${duplicateFlights.has(`${flight.flightNumber}-${flight.flightDate}`) ? 'duplicate' : ''}`}
-              style={{
-                color: duplicateFlights.has(`${flight.flightNumber}-${flight.flightDate}`) ? 'red' : 'black',
-              }}
-            >
-            Flight Number: {flight.flightNumber}, Date: {flight.flightDate}, Arrival Time: {arrivalTimes[`${flight.flightNumber}-${flight.flightDate}`] || 'N/A'}
-            {flight.phoneNumber && `, Phone Number: ${flight.phoneNumber}`}
-            {`, Wait: ${flight.maxWaitTime} minutes`}
-          </li>
-          ))}
-        </ul>
-      </div>
-    );
+      return (
+        <div>
+          <h2>Flight List</h2>
+          <RemoveAllFlightsButton />
+          <button onClick={handleRemoveMostRecentFlight}>Remove Most Recent Flight</button>
+          <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+            <thead>
+              <tr>
+                <th style={{ padding: '10px', border: '1px solid black' }}>ID</th>
+                <th style={{ padding: '10px', border: '1px solid black' }}>Flight Number</th>
+                <th style={{ padding: '10px', border: '1px solid black' }}>Date</th>
+                <th style={{ padding: '10px', border: '1px solid black' }}>Arrival Time</th>
+                <th style={{ padding: '10px', border: '1px solid black' }}>Phone Number</th>
+                <th style={{ padding: '10px', border: '1px solid black' }}>Wait Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {flights.map((flight) => (
+                <tr
+                  key={flight.id}
+                  className={`flight-item ${duplicateFlights.has(`${flight.flightNumber}-${flight.flightDate}`) ? 'duplicate' : ''}`}
+                  style={{
+                    color: duplicateFlights.has(`${flight.flightNumber}-${flight.flightDate}`) ? 'red' : 'black',
+                  }}
+                >
+                  <td style={{ padding: '10px', border: '1px solid black' }}>{flight.id}</td>
+                  <td style={{ padding: '10px', border: '1px solid black' }}>{flight.flightNumber}</td>
+                  <td style={{ padding: '10px', border: '1px solid black' }}>{flight.flightDate}</td>
+                  <td style={{ padding: '10px', border: '1px solid black' }}>{arrivalTimes[`${flight.flightNumber}-${flight.flightDate}`] || 'N/A'}</td>
+                  <td style={{ padding: '10px', border: '1px solid black' }}>{flight.phoneNumber || 'N/A'}</td>
+                  <td style={{ padding: '10px', border: '1px solid black' }}>{flight.maxWaitTime || 'N/A'} minutes</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
   };
   
   export default FlightList;
