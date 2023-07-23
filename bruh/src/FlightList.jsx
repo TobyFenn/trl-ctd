@@ -53,6 +53,7 @@ const FlightList = () => {
   }, []);
 
   useEffect(() => {
+    // Function to check for duplicate flights
     const findDuplicateFlights = (flightsArray) => {
       const duplicateMap = {};
       const duplicateIds = new Set();
@@ -60,8 +61,8 @@ const FlightList = () => {
       flightsArray.forEach((flight) => {
         const flightKey = `${flight.flightNumber}-${flight.flightDate}`;
         if (duplicateMap[flightKey]) {
-          duplicateIds.add(flightKey);
-          duplicateMap[flightKey].push(flight.id);
+          duplicateIds.add(flightKey); // Use flightKey instead of flight.id
+          duplicateMap[flightKey].push(flight.id); // Use flightKey instead of flight.id
         } else {
           duplicateMap[flightKey] = [flight.id];
         }
