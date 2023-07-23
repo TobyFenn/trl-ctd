@@ -6,7 +6,7 @@ const FlightForm = () => {
   const [flightNumber, setFlightNumber] = useState('');
   const [flightDate, setFlightDate] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [maxWaitTime, setMaxWaitTime] = useState(0); // New state for maximum wait time
+  const [maxWaitTime, setMaxWaitTime] = useState(30); // New state for maximum wait time
 
   // Function to handle input changes
   const handleInputChange = (event) => {
@@ -101,7 +101,6 @@ const FlightForm = () => {
           onChange={handleInputChange}
           required
         >
-          <option value={0}>0 minutes</option>
           <option value={30}>30 minutes</option>
           <option value={60}>60 minutes</option>
           <option value={90}>90 minutes</option>

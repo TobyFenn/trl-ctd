@@ -84,8 +84,8 @@ const FlightList = () => {
 
             // Adding console debug messages here
             console.log('Two flights match:');
-            console.log('Flight 1 ID:', flight.id);
-            console.log('Flight 2 ID:', otherFlight.id);
+            console.log('Flight 1 phone #:', flight.phoneNumber);
+            console.log('Flight 2 phone #:', otherFlight.phoneNumber);
 
             break; // Break if a match is found
           }
@@ -166,12 +166,12 @@ const FlightList = () => {
       <table style={{ borderCollapse: 'collapse', width: '100%' }}>
         <thead>
           <tr>
-            <th style={{ padding: '10px', border: '1px solid black' }}>ID</th>
+            <th style={{ padding: '10px', border: '1px solid black' }}>Unique User ID</th>
             <th style={{ padding: '10px', border: '1px solid black' }}>Flight Number</th>
             <th style={{ padding: '10px', border: '1px solid black' }}>Date</th>
             <th style={{ padding: '10px', border: '1px solid black' }}>Arrival Time</th>
             <th style={{ padding: '10px', border: '1px solid black' }}>Phone Number</th>
-            <th style={{ padding: '10px', border: '1px solid black' }}>Wait Time</th>
+            <th style={{ padding: '10px', border: '1px solid black' }}>Wait Tolerance</th>
             </tr>
           </thead>
           <tbody>
