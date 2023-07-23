@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, onValue, off } from 'firebase/database';
 import RemoveAllFlightsButton from './RemoveAllFlightsButton'; // Import the new button component
-
-
+// import axios from 'axios'; // Commented out the import for making HTTP requests
 
 const FlightList = () => {
   const [flights, setFlights] = useState([]);
+  const [arrivalTimes, setArrivalTimes] = useState({});
+  const [duplicateFlights, setDuplicateFlights] = useState({});
 
   useEffect(() => {
     // Initialize Firebase
@@ -19,7 +20,7 @@ const FlightList = () => {
         appId: "1:438351659234:web:c110c8410d5c9300e55ebb"
       };
 
-      const app = initializeApp(firebaseConfig);
+    const app = initializeApp(firebaseConfig);
     const database = getDatabase();
     const flightsRef = ref(database, 'flights');
 
@@ -53,19 +54,49 @@ const FlightList = () => {
     };
   }, []);
 
+  useEffect(() => {
+    // Function to check for duplicate flights
+    const findDuplicateFlights = (flightsArray) => {
+      const duplicateMap = {};
+      const duplicateIds = new Set();
+  
+      flightsArray.forEach((flight) => {
+        const flightKey = `${flight.flightNumber}-${flight.flightDate}`;
+        if (duplicateMap[flightKey]) {
+          duplicateIds.add(flightKey); // Use flightKey instead of flight.id
+          duplicateMap[flightKey].push(flight.id); // Use flightKey instead of flight.id
+        } else {
+          duplicateMap[flightKey] = [flight.id];
+        }
+      });
+  
+      setDuplicateFlights(duplicateIds);
+    };
+  
+    findDuplicateFlights(flights);
+  }, [flights]);
+  
+
   return (
     <div>
       <h2>Flight List</h2>
       <RemoveAllFlightsButton />
       <ul>
         {flights.map((flight) => (
-          <li key={flight.id}>
-            Flight Number: {flight.flightNumber}, Date: {flight.flightDate}
+          <li
+            key={flight.id}
+            className={`flight-item ${duplicateFlights.has(`${flight.flightNumber}-${flight.flightDate}`) ? 'duplicate' : ''}`}
+            style={{
+              color: duplicateFlights.has(`${flight.flightNumber}-${flight.flightDate}`) ? 'red' : 'black',
+            }}
+          >
+            Flight Number: {flight.flightNumber}, Date: {flight.flightDate}, Arrival Time: {arrivalTimes[`${flight.flightNumber}-${flight.flightDate}`]}
           </li>
         ))}
       </ul>
     </div>
   );
+  
 };
 
 export default FlightList;
