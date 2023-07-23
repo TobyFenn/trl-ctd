@@ -1,34 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, onValue, off } from 'firebase/database';
+// import { initializeApp } from 'firebase/app';
+import { getDatabase, ref, get } from 'firebase/database';
 import RemoveAllFlightsButton from './RemoveAllFlightsButton';
 import axios from 'axios';
 
-// Initialize Firebase
-const firebaseConfig = {
-    apiKey: "AIzaSyDtXJdCDFnkS044k-_6TMrd83YQHo-NX04",
-    authDomain: "flites.firebaseapp.com",
-    projectId: "flites",
-    storageBucket: "flites.appspot.com",
-    messagingSenderId: "438351659234",
-    appId: "1:438351659234:web:c110c8410d5c9300e55ebb"
-  };
+// // Initialize Firebase
+// const firebaseConfig = {
+//   apiKey: "YOUR_API_KEY",
+//   authDomain: "flites.firebaseapp.com",
+//   projectId: "flites",
+//   storageBucket: "flites.appspot.com",
+//   messagingSenderId: "438351659234",
+//   appId: "1:438351659234:web:c110c8410d5c9300e55ebb"
+// };
 
-initializeApp(firebaseConfig);
+// initializeApp(firebaseConfig);
 
 const FlightList = () => {
   const [flights, setFlights] = useState([]);
   const [arrivalTimes, setArrivalTimes] = useState({});
-  const [duplicateFlights, setDuplicateFlights] = useState({});
 
   useEffect(() => {
     const database = getDatabase();
     const flightsRef = ref(database, 'flights');
 
-    const fetchData = () => {
-      onValue(flightsRef, (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
+    const fetchData = async () => {
+      try {
+        const snapshot = await get(flightsRef);
+        if (snapshot.exists()) {
+          const data = snapshot.val();
           const flightsArray = Object.keys(data).map((key) => ({
             id: key,
             ...data[key],
@@ -37,41 +37,13 @@ const FlightList = () => {
         } else {
           setFlights([]);
         }
-      });
+      } catch (error) {
+        console.error('Error fetching flight data:', error);
+      }
     };
 
     fetchData();
-
-    const dataChangeCallback = () => {
-      fetchData();
-    };
-    onValue(flightsRef, dataChangeCallback);
-
-    return () => {
-      off(flightsRef, dataChangeCallback);
-    };
   }, []);
-
-  useEffect(() => {
-    const findDuplicateFlights = (flightsArray) => {
-      const duplicateMap = {};
-      const duplicateIds = new Set();
-
-      flightsArray.forEach((flight) => {
-        const flightKey = `${flight.flightNumber}-${flight.flightDate}`;
-        if (duplicateMap[flightKey]) {
-          duplicateIds.add(flightKey);
-          duplicateMap[flightKey].push(flight.id);
-        } else {
-          duplicateMap[flightKey] = [flight.id];
-        }
-      });
-
-      setDuplicateFlights(duplicateIds);
-    };
-
-    findDuplicateFlights(flights);
-  }, [flights]);
 
   const fetchFlightInformation = async (flightIata) => {
     const api_key = "dcb6ad7a-9efc-4bc2-b038-709e397984d4";
@@ -121,9 +93,8 @@ const FlightList = () => {
         {flights.map((flight) => (
           <li
             key={flight.id}
-            className={`flight-item ${duplicateFlights.has(`${flight.flightNumber}-${flight.flightDate}`) ? 'duplicate' : ''}`}
             style={{
-              color: duplicateFlights.has(`${flight.flightNumber}-${flight.flightDate}`) ? 'red' : 'black',
+              color: 'black',
             }}
           >
             Flight Number: {flight.flightNumber}, Date: {flight.flightDate}, Arrival Time: {arrivalTimes[`${flight.flightNumber}-${flight.flightDate}`] || 'N/A'}
