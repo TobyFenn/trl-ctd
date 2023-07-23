@@ -77,7 +77,7 @@ const FlightList = () => {
     const api_key = "dcb6ad7a-9efc-4bc2-b038-709e397984d4";
     const api_base = "https://airlabs.co/api/v9/";
     try {
-      const response = await axios.get(`${api_base}flight`, {
+      const response = await axios.get(`${api_base}schedules`, {
         params: {
           api_key,
           flight_iata: flightIata,
@@ -98,9 +98,9 @@ const FlightList = () => {
         const { flightNumber, flightDate } = flight;
         console.log(`Fetching Arrival Time for Flight Number: ${flightNumber} - Date: ${flightDate}`); // Debug: Log flight details
         const flightInfo = await fetchFlightInformation(flightNumber);
-        if (flightInfo) {
-          console.log(`Arrival Time for Flight Number: ${flightNumber} - Date: ${flightDate} - ${flightInfo.arr_time_utc}`); // Debug: Log arrival time
-          updatedArrivalTimes[`${flightNumber}-${flightDate}`] = flightInfo.arr_time_utc;
+        if (flightInfo && flightInfo.response && flightInfo.response[0] && flightInfo.response[0].arr_time_utc) { // Check if arr_time_utc exists in the API response
+          console.log(`Arrival Time for Flight Number: ${flightNumber} - Date: ${flightDate} - ${flightInfo.response[0].arr_time_utc}`); // Debug: Log arrival time
+          updatedArrivalTimes[`${flightNumber}-${flightDate}`] = flightInfo.response[0].arr_time_utc;
         } else {
           console.log(`No Arrival Time found for Flight Number: ${flightNumber} - Date: ${flightDate}`); // Debug: Log if no arrival time
           updatedArrivalTimes[`${flightNumber}-${flightDate}`] = 'N/A';
@@ -111,6 +111,7 @@ const FlightList = () => {
 
     fetchFlightInfoForFlights();
   }, [flights]);
+
 
   return (
     <div>
