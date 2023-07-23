@@ -5,6 +5,7 @@ import { getDatabase, ref, set, push } from 'firebase/database';
 const FlightForm = () => {
   const [flightNumber, setFlightNumber] = useState('');
   const [flightDate, setFlightDate] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState(''); // New state for phone number
 
   // Function to handle input changes
   const handleInputChange = (event) => {
@@ -13,6 +14,8 @@ const FlightForm = () => {
       setFlightNumber(value.toUpperCase().slice(0, 6));
     } else if (name === 'flightDate') {
       setFlightDate(value);
+    } else if (name === 'phoneNumber') {
+      setPhoneNumber(value);
     }
   };
 
@@ -22,6 +25,7 @@ const FlightForm = () => {
     // You can use this information to store it in Firebase or perform other actions
     console.log('Submitted Flight Number:', flightNumber);
     console.log('Submitted Flight Date:', flightDate);
+    console.log('Submitted Phone Number:', phoneNumber);
 
     // Store the flight information in Firebase Firestore Realtime Database
     const firebaseConfig = {
@@ -33,7 +37,6 @@ const FlightForm = () => {
         appId: "1:438351659234:web:c110c8410d5c9300e55ebb"
       };
 
-    // const app = initializeApp(firebaseConfig);
     initializeApp(firebaseConfig);
 
     const database = getDatabase();
@@ -43,6 +46,7 @@ const FlightForm = () => {
     set(newFlightRef, {
       flightNumber: flightNumber,
       flightDate: flightDate,
+      phoneNumber: phoneNumber, // Include the phone number in the stored data
     });
   };
 
@@ -68,6 +72,17 @@ const FlightForm = () => {
           id="flightDate"
           name="flightDate"
           value={flightDate}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
+      <div>
+        <label htmlFor="phoneNumber">Phone Number: </label>
+        <input
+          type="tel"
+          id="phoneNumber"
+          name="phoneNumber"
+          value={phoneNumber}
           onChange={handleInputChange}
           required
         />
