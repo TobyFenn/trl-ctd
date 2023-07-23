@@ -55,7 +55,7 @@ const FlightList = () => {
   return (
     <div>
       <h2>Flight List</h2>
-      <RemoveAllFlightsButton /> {/* Add the RemoveAllFlightsButton component */}
+      <RemoveAllFlightsButton />
       <ul>
         {flights.map((flight) => (
           <li key={flight.id}>
