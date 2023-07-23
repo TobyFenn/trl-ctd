@@ -75,7 +75,7 @@ const firebaseConfig = {
     }, [flights]);
   
     const fetchFlightInformation = async (flightIata) => {
-      const api_key = "dcb6ad7a-9efc-4bc2-b038-709e397984d4";
+      const api_key = "17bfab51-0ce4-4899-9fb8-70deb82eddbc"; //v2
       const api_base = "https://airlabs.co/api/v9/";
       try {
         const response = await axios.get(`${api_base}schedules`, {

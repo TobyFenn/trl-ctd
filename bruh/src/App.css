@@ -43,6 +43,18 @@
   color: white;
 }
 
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.centered-content {
+  text-align: center;
+}
+
+
 .App-link {
   color: #61dafb;
 }

@@ -1,7 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Import "Routes" instead of "Switch"
-import Home from './Home';
-import NewPage from './NewPage';
+import { BrowserRouter as Router } from 'react-router-dom'; // Import "Routes" instead of "Switch"
+// import Home from './Home';
+// import NewPage from './NewPage';
 import FlightForm from './FlightForm';
 import FlightList from './FlightList';
 
