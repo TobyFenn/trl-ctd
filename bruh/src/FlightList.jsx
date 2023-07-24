@@ -19,6 +19,7 @@ const firebaseConfig = {
 const FlightList = () => {
   const [flights, setFlights] = useState([]);
   const [arrivalTimes, setArrivalTimes] = useState({});
+  const [flightInfo, setFlightInfo] = useState({}); // New state for storing flight information
   const [duplicateFlightIds, setDuplicateFlightIds] = useState([]);
   const [matchedFlights, setMatchedFlights] = useState([]);
 
@@ -134,6 +135,7 @@ const FlightList = () => {
   useEffect(() => {
     const fetchFlightInfoForFlights = async () => {
       const updatedArrivalTimes = {};
+      const updatedFlightInfo = {}; // New object to store additional flight information
 
       for (const flight of flights) {
         const { flightNumber, flightDate } = flight;
@@ -144,18 +146,33 @@ const FlightList = () => {
           if (flightInfo && flightInfo.response && flightInfo.response[0] && flightInfo.response[0].arr_time_utc) {
             console.log(`Arrival Time for Flight Number: ${flightNumber} - Date: ${flightDate} - ${flightInfo.response[0].arr_time_utc}`);
             updatedArrivalTimes[`${flightNumber}-${flightDate}`] = flightInfo.response[0].arr_time_utc;
+            // Store additional flight information in the updatedFlightInfo object
+            updatedFlightInfo[`${flightNumber}-${flightDate}`] = {
+              status: flightInfo.response[0].status,
+              terminal: flightInfo.response[0].arr_terminal,
+            };
           } else {
             console.log(`No Arrival Time found for Flight Number: ${flightNumber} - Date: ${flightDate}`);
             updatedArrivalTimes[`${flightNumber}-${flightDate}`] = 'N/A';
+            // Store default values for status and terminal in case of missing data
+            updatedFlightInfo[`${flightNumber}-${flightDate}`] = {
+              status: 'N/A',
+              terminal: 'N/A',
+            };
           }
         } catch (error) {
           console.error('Error fetching flight information:', error);
           updatedArrivalTimes[`${flightNumber}-${flightDate}`] = 'Error';
+          // Store default values for status and terminal in case of an error
+          updatedFlightInfo[`${flightNumber}-${flightDate}`] = {
+            status: 'Error',
+            terminal: 'Error',
+          };
         }
       }
 
       setArrivalTimes(updatedArrivalTimes);
-    //   setAreArrivalTimesFetched(true); // Set to true when arrival times are fetched
+      setFlightInfo(updatedFlightInfo); // Update the flight information state
     };
 
     fetchFlightInfoForFlights();
@@ -188,7 +205,9 @@ const FlightList = () => {
             <th style={{ padding: '10px', border: '1px solid black' }}>Arrival Time</th>
             <th style={{ padding: '10px', border: '1px solid black' }}>Phone Number</th>
             <th style={{ padding: '10px', border: '1px solid black' }}>Wait Tolerance</th>
-            </tr>
+            <th style={{ padding: '10px', border: '1px solid black' }}>Status</th>
+            <th style={{ padding: '10px', border: '1px solid black' }}>Terminal</th>
+          </tr>
           </thead>
           <tbody>
             {flights.map((flight) => (
@@ -205,6 +224,8 @@ const FlightList = () => {
     <td style={{ padding: '10px', border: '1px solid black' }}>{arrivalTimes[`${flight.flightNumber}-${flight.flightDate}`] || 'N/A'}</td>
     <td style={{ padding: '10px', border: '1px solid black' }}>{flight.phoneNumber || 'N/A'}</td>
     <td style={{ padding: '10px', border: '1px solid black' }}>{flight.maxWaitTime || 'N/A'} minutes</td>
+    <td style={{ padding: '10px', border: '1px solid black' }}>{flightInfo[`${flight.flightNumber}-${flight.flightDate}`]?.status || 'N/A'}</td>
+    <td style={{ padding: '10px', border: '1px solid black' }}>{flightInfo[`${flight.flightNumber}-${flight.flightDate}`]?.terminal || 'N/A'}</td>
     </tr>
             ))}
           </tbody>
