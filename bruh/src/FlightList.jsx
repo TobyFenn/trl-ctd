@@ -59,7 +59,7 @@ const FlightList = () => {
 
   useEffect(() => {
     // Function to check for duplicate flights
-    const findDuplicateFlights = (flightsArray) => {
+    const findMatchedFlights = (flightsArray) => {
       const duplicateIds = [];
       const matchedFlightData = []; // Array to store matched flights data
 
@@ -83,19 +83,23 @@ const FlightList = () => {
             continue;
           }
 
-          if (arrivalTime === otherArrivalTime) {
-            duplicateIds.push(flight.id);
-            duplicateIds.push(otherFlight.id);
+          // Calculate the difference in minutes between the two arrival times
+        const diffInMinutes = Math.abs((new Date(arrivalTime) - new Date(otherArrivalTime)) / 60000);
 
-            // Add the matched flights data to the array
-            matchedFlightData.push({ flight1Id: flight.id, flight2Id: otherFlight.id });
+        // Check if the difference falls within the maxWaitTime of either flight
+        if (diffInMinutes <= flight.maxWaitTime || diffInMinutes <= otherFlight.maxWaitTime) {
+          duplicateIds.push(flight.id);
+          duplicateIds.push(otherFlight.id);
 
-            // Adding console debug messages here
-            console.log('Two flights match:');
-            console.log('Flight 1 phone #:', flight.phoneNumber);
-            console.log('Flight 2 phone #:', otherFlight.phoneNumber);
+          // Add the matched flights data to the array
+          matchedFlightData.push({ flight1Id: flight.id, flight2Id: otherFlight.id });
 
-            break; // Break if a match is found
+          // Adding console debug messages here
+          console.log('Two flights match:');
+          console.log('Flight 1 phone #:', flight.phoneNumber);
+          console.log('Flight 2 phone #:', otherFlight.phoneNumber);
+
+          break; // Break if a match is found
           }
         }
       });
@@ -104,8 +108,9 @@ const FlightList = () => {
       setMatchedFlights(matchedFlightData); // Update the matched flights data state
 
     };
+    
 
-    findDuplicateFlights(flights);
+    findMatchedFlights(flights);
   }, [flights, arrivalTimes]);
 
   const fetchFlightInformation = async (flightIata) => {
@@ -167,6 +172,7 @@ const FlightList = () => {
       set(flightRef, null);
     }
   };
+  
 
   return (
     <div>
@@ -222,7 +228,17 @@ const FlightList = () => {
             const flight1Iata = flight1 ? flight1.flightNumber : 'N/A';
             const flight2Iata = flight2 ? flight2.flightNumber : 'N/A';
 
-            const justification = `${flight1Iata} lands at the same time as ${flight2Iata}`;
+            // Calculate the difference in minutes between the two arrival times
+            const arrivalTime1 = arrivalTimes[`${flight1.flightNumber}-${flight1.flightDate}`];
+            const arrivalTime2 = arrivalTimes[`${flight2.flightNumber}-${flight2.flightDate}`];
+            const diffInMinutes = Math.abs((new Date(arrivalTime1) - new Date(arrivalTime2)) / 60000);
+
+            // Check if the difference falls within the maxWaitTime of either flight
+            const isMatched = diffInMinutes <= flight1.maxWaitTime || diffInMinutes <= flight2.maxWaitTime;
+
+            const justification = isMatched
+              ? `${flight2Iata} lands ${diffInMinutes} minutes after ${flight1Iata}`
+              : 'N/A';
 
             return (
               <tr key={index}>
