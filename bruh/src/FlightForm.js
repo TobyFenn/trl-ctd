@@ -104,6 +104,7 @@ const FlightForm = () => {
           <option value={30}>30 minutes</option>
           <option value={60}>60 minutes</option>
           <option value={90}>90 minutes</option>
+          <option value={1440}>DEBUG (24 hr)</option>
         </select>
       </div>
       <button type="submit">Submit</button>
