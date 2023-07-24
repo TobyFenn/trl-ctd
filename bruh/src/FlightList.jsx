@@ -204,26 +204,38 @@ const FlightList = () => {
           </tbody>
         </table>
 
-        {/* New table for displaying matched flights */}
+        {/* New table for displaying matched flights with the "Justification" column */}
       <h2>Matched Flights</h2>
       <table style={{ borderCollapse: 'collapse', width: '100%' }}>
         <thead>
           <tr>
             <th style={{ padding: '10px', border: '1px solid black' }}>Flight 1 ID</th>
             <th style={{ padding: '10px', border: '1px solid black' }}>Flight 2 ID</th>
+            <th style={{ padding: '10px', border: '1px solid black' }}>Justification</th>
           </tr>
         </thead>
         <tbody>
-          {matchedFlights.map((matchedFlight, index) => (
-            <tr key={index}>
-              <td style={{ padding: '10px', border: '1px solid black' }}>{matchedFlight.flight1Id}</td>
-              <td style={{ padding: '10px', border: '1px solid black' }}>{matchedFlight.flight2Id}</td>
-            </tr>
-          ))}
+          {matchedFlights.map((matchedFlight, index) => {
+            const flight1 = flights.find((flight) => flight.id === matchedFlight.flight1Id);
+            const flight2 = flights.find((flight) => flight.id === matchedFlight.flight2Id);
+
+            const flight1Iata = flight1 ? flight1.flightNumber : 'N/A';
+            const flight2Iata = flight2 ? flight2.flightNumber : 'N/A';
+
+            const justification = `${flight1Iata} lands at the same time as ${flight2Iata}`;
+
+            return (
+              <tr key={index}>
+                <td style={{ padding: '10px', border: '1px solid black' }}>{matchedFlight.flight1Id}</td>
+                <td style={{ padding: '10px', border: '1px solid black' }}>{matchedFlight.flight2Id}</td>
+                <td style={{ padding: '10px', border: '1px solid black' }}>{justification}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
-      </div>
-    );
+    </div>
+  );
 };
 
 export default FlightList;
