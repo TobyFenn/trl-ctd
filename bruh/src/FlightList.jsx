@@ -20,6 +20,8 @@ const FlightList = () => {
   const [flights, setFlights] = useState([]);
   const [arrivalTimes, setArrivalTimes] = useState({});
   const [duplicateFlightIds, setDuplicateFlightIds] = useState([]);
+  const [matchedFlights, setMatchedFlights] = useState([]);
+
 //   const [areArrivalTimesFetched, setAreArrivalTimesFetched] = useState(false);
 
 
@@ -53,11 +55,14 @@ const FlightList = () => {
       off(flightsRef, dataChangeCallback);
     };
   }, []);
+  
 
   useEffect(() => {
     // Function to check for duplicate flights
     const findDuplicateFlights = (flightsArray) => {
       const duplicateIds = [];
+      const matchedFlightData = []; // Array to store matched flights data
+
 
       flightsArray.forEach((flight, index) => {
         const { flightNumber, flightDate } = flight;
@@ -82,6 +87,9 @@ const FlightList = () => {
             duplicateIds.push(flight.id);
             duplicateIds.push(otherFlight.id);
 
+            // Add the matched flights data to the array
+            matchedFlightData.push({ flight1Id: flight.id, flight2Id: otherFlight.id });
+
             // Adding console debug messages here
             console.log('Two flights match:');
             console.log('Flight 1 phone #:', flight.phoneNumber);
@@ -93,6 +101,8 @@ const FlightList = () => {
       });
 
       setDuplicateFlightIds(duplicateIds);
+      setMatchedFlights(matchedFlightData); // Update the matched flights data state
+
     };
 
     findDuplicateFlights(flights);
@@ -193,6 +203,25 @@ const FlightList = () => {
             ))}
           </tbody>
         </table>
+
+        {/* New table for displaying matched flights */}
+      <h2>Matched Flights</h2>
+      <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+        <thead>
+          <tr>
+            <th style={{ padding: '10px', border: '1px solid black' }}>Flight 1 ID</th>
+            <th style={{ padding: '10px', border: '1px solid black' }}>Flight 2 ID</th>
+          </tr>
+        </thead>
+        <tbody>
+          {matchedFlights.map((matchedFlight, index) => (
+            <tr key={index}>
+              <td style={{ padding: '10px', border: '1px solid black' }}>{matchedFlight.flight1Id}</td>
+              <td style={{ padding: '10px', border: '1px solid black' }}>{matchedFlight.flight2Id}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
       </div>
     );
 };
